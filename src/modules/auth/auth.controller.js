@@ -32,18 +32,13 @@ export const protectedRoutes = catchError( async (req, res, next) => {
     let { token } = req.headers;
     if (!token) return next(new AppError("token not founded", 401))
     let userPayload = {};
-    jwt.verify(token, "skkkk", (err, payload) => {
+    jwt.verify(token,process.env.JWT_KEY, (err, payload) => {
         if (err) return next(new AppError("invalid token", 401))
         userPayload = payload;
     })
   
-    let user = await User.findById(Payload.userId)
-    if (!user) return next(new AppError("user Not found", 409))
-    
-    if (user.passwordChangAt) {
-        let time = parseInt((user.passwordChangAt.getTime()) / 1000)
-        if (time > userPayload.iat) return next(new AppError("invalid token ...login again", 401))
-    }
+    let user = await User.findById(userPayload.userId)
+    if (!user) return next(new AppError("user Not found", 401))
     
     req.user = user;
     next()

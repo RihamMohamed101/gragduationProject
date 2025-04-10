@@ -25,20 +25,7 @@ export const signin = catchError(async (req, res, next) => {
 })
 
 
-export const changPassword = catchError(async (req, res, next) => {
-    let user = await User.findOne({ email: req.body.email })
 
-    if (user && bcrypt.compareSync(req.body.oldPassword, user.password)) {
-
-        await User.findOneAndUpdate({ email: req.body.email }, { password: req.body.newPassword });
-        let token = jwt.sign({ userId: user._id, role: user.role },  process.env.JWT_KEY)
-        return res.json({message:"success" , token})
-    }
-
-    next(new AppError("not founded email or password" , 401))
-}
-
-)
 
 
 export const protectedRoutes = catchError( async (req, res, next) => {

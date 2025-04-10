@@ -40,7 +40,3 @@ export const uploadSingleFile = (fileName , folderName) => {
      return fileUpload(folderName).single(fileName)
 }
 
-
-export const uploadMixFile = (arayOfFilds , folderName) => {
-    return fileUpload(folderName).fields(arayOfFilds)
-}

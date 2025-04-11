@@ -7,7 +7,7 @@ import { User } from "../../../databases/models/user.models.js";
 export const addUser = catchError(async (req, res, next) => {
     
     let user = new User(req.body)
-    await User.save()
+    await user.save()
 
     res.status(201).json({message:"success" , user})
 }
@@ -15,8 +15,8 @@ export const addUser = catchError(async (req, res, next) => {
 
 export const getUser = catchError(async(req, res , next) => {
     let user = await User.findById(req.params.id)
-    return User ? res.status(200).json({ message: "success", user })
-                    : next(new AppError("User not founded" , 404))
+    return user ? res.status(200).json({ message: "success", user })
+                : next(new AppError("User not founded" , 404))
 } 
 )
 export const allUsers = catchError(async (req, res, next) => {

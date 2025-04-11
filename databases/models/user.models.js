@@ -9,7 +9,7 @@ const schema = new Schema({
     },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true ,trim:true}, 
-    role: { type: String, enum: ['doctor', 'patient', 'assistant', 'admin'], required: true },
+  role: { type: String, enum: ['doctor', 'patient', 'assistant', 'admin'], required: true },
   
 
     doctorId: {
@@ -65,7 +65,8 @@ const schema = new Schema({
     
     type: { type: String},
     startDate: { type: Date, default: Date.now },
-    endDate: { type: Date, required: false },
+     endDate: { type: Date, required: false },
+    
     }],
  
  
@@ -74,24 +75,29 @@ const schema = new Schema({
       filePath:
       {
           type: String,
-          required: false, trim: true
+          required: false,
+          trim: true
       },
+
       uploadedBy:
       {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
           required: true
       },
+
       uploadDate:
       {
           type: Date,
           default: Date.now
       },
+
       analyzed:
       {
           type: Boolean,
           default: false
       },
+
       analysisResult:
       {
           type: Object,

@@ -8,6 +8,5 @@ import { checkEmail } from "../../middleware/checkEmail.js";
 const authRouer = Router()
 authRouer.post('/signup', checkEmail,signup)
 authRouer.post('/signin', signin)
-authRouer.patch('/chang-password',changPassword)
 
 export default authRouer

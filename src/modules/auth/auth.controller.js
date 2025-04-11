@@ -37,10 +37,12 @@ export const protectedRoutes = catchError( async (req, res, next) => {
         userPayload = payload;
     })
   
-    let user = await User.findById(userPayload.userId)
-    if (!user) return next(new AppError("user Not found", 401))
+    // let user = await User.findById(userPayload.userId)
+    // if (!user) return next(new AppError("user Not found", 401))
     
-    req.user = user;
+    req.user = userPayload;
+    console.log("hhhhhhh");
+    
     next()
 
 })
@@ -49,7 +51,11 @@ export const protectedRoutes = catchError( async (req, res, next) => {
 export const allowedTo = (...roles)=> {
     return catchError(async (req, res, next) => {
         if (roles.includes(req.user.role))
-           return next()
+        {
+            console.log("hhhhhhh1");
+             return next()
+             
+        }
        return next(new AppError("not authorized to access this end point" , 401))
     })
 }

@@ -22,6 +22,7 @@ export const addPatient = catchError(async(req , res , next) => {
     if (doctor.role !== "doctor") {
         return next(new AppError("Only doctors can add patients", 403));
     }
+    
 
     const { name, email, password, age, assistantId } = req.body;
 
@@ -76,7 +77,7 @@ export const updatePatientByDoctor = catchError(async (req, res, next) => {
     const updatedPatient = await User.findByIdAndUpdate(
         req.params.id,
         req.body,
-        { new: SVGComponentTransferFunctionElement}
+        { new: true}
     );
 
     res.status(200).json({

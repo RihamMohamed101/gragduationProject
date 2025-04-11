@@ -13,20 +13,20 @@ const schema = new Schema({
   
 
     doctorId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Types.ObjectId,
         ref: 'User',
         required: function () { return this.role === 'patient'; }
     }, // للمريض فقط
 
     assistantId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type:Types.ObjectId,
         ref: 'User',
         required: function () { return this.role === 'patient'; }
     }, // للمريض فقط
 
     patientId:
     {
-        type: mongoose.Schema.Types.ObjectId,
+        type:Types.ObjectId,
         ref: 'User',
         required: function () { return this.role === 'assistant'; }
     }, // للمساعد فقط
@@ -81,7 +81,7 @@ const schema = new Schema({
 
       uploadedBy:
       {
-          type: mongoose.Schema.Types.ObjectId,
+          type: Types.ObjectId,
           ref: 'User',
           required: true
       },

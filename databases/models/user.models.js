@@ -4,12 +4,17 @@ import bcrypt from "bcrypt"
 
 const schema = new Schema({
    
-  name: { type: String, required: true , trime: true,
+    name: {
+        type: String, required: true, trime: true,
             minLength: [3, 'Name must be at least 3 characters']
     },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true ,trim:true}, 
-  role: { type: String, enum: ['doctor', 'patient', 'assistant', 'admin'], required: true },
+   email: { type: String, required: true, unique: true },
+   password: { type: String, required: true ,trim:true}, 
+    role: {
+        type: String,
+        enum: ['doctor', 'patient', 'admin', 'Radiologist'],
+        required: true
+    },
   
 
     doctorId: {
@@ -18,18 +23,6 @@ const schema = new Schema({
         required: function () { return this.role === 'patient'; }
     }, // للمريض فقط
 
-    assistantId: {
-        type:Types.ObjectId,
-        ref: 'User',
-        required: function () { return this.role === 'patient'; }
-    }, // للمريض فقط
-
-    patientId:
-    {
-        type:Types.ObjectId,
-        ref: 'User',
-        required: function () { return this.role === 'assistant'; }
-    }, // للمساعد فقط
 
     age: {
         type: Number,

@@ -6,22 +6,22 @@ import { checkEmail } from "../../middleware/checkEmail.js";
 
 
 
-const patientRouter = Router()
+const patientRouter = Router({mergeParams:true})
 
 patientRouter.get('/:id'
-    , protectedRoutes, allowedTo( 'doctor', 'assistant', 'patient')
-    , canAccessPatientData, getPatient)
+    ,protectedRoutes, allowedTo('doctor','patient','admin')
+    ,canAccessPatientData, getPatient)
 
 patientRouter.get('/',protectedRoutes,
-    allowedTo('doctor'),getMyPatients )
+    allowedTo('admin','doctor'),getMyPatients )
 
 patientRouter.post('/', protectedRoutes, allowedTo('doctor'),checkEmail, addPatient)
 
 patientRouter.put('/:id', protectedRoutes,
-    allowedTo('doctor'), updatePatientByDoctor)
+    allowedTo('doctor'),canAccessPatientData, updatePatientByDoctor)
 
 patientRouter.delete('/:id', protectedRoutes,
-    allowedTo('doctor'), deletePatientByDoctor)
+    allowedTo('doctor' , 'admin'),canAccessPatientData, deletePatientByDoctor)
 
     
 export default patientRouter

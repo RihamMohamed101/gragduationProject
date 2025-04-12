@@ -11,7 +11,14 @@ export const getPatient = catchError(async(req ,res ,next) => {
 
 
 export const getMyPatients = catchError(async (req, res, next) => {
-    const patients = await User.find({ role: "patient", doctorId: req.user.userId });
+
+    let filterObj = {};
+    filterObj.role = "patient" 
+    if (req.params.doctorId)
+        filterObj.doctorId = req.params.doctorId;
+    
+    const patients = await User.find(filterObj);
+
     res.status(200).json({ message: "success", patients });
 });
 
@@ -19,23 +26,8 @@ export const getMyPatients = catchError(async (req, res, next) => {
 export const addPatient = catchError(async(req , res , next) => {
     const doctor = req.user;
     
-    if (doctor.role !== "doctor") {
-        return next(new AppError("Only doctors can add patients", 403));
-    }
-    
 
-    const { name, email, password, age, assistantId } = req.body;
-
-   
-    let assistant = null;
-
-    if (assistantId) {
-        assistant = await User.findById(assistantId);
-        if (!assistant || assistant.role !== "assistant") {
-            return next(new AppError("Invalid assistant ID", 400));
-        }
-    }
-    
+    const { name, email, password, age} = req.body;
 
      const newPatient = new User({
         name,
@@ -43,8 +35,7 @@ export const addPatient = catchError(async(req , res , next) => {
         password,
         age,
         role: "patient",
-        doctorId: doctor.userId,
-        assistantId: assistant?._id // دي هنا ان الدكتور بيضيف مساعد للمريض 
+        doctorId: doctor.userId
     });
  
      await newPatient.save();
@@ -56,24 +47,11 @@ export const addPatient = catchError(async(req , res , next) => {
 
 
 export const updatePatientByDoctor = catchError(async (req, res, next) => {
-    const doctor = req.user;
-
-    if (doctor.role !== "doctor") {
-        return next(new AppError("Only doctors can update patients", 403));
-    }
 
     const patient = await User.findById(req.params.id);
-
     if (!patient || patient.role !== "patient") {
         return next(new AppError("Patient not found", 404));
     }
-
-    if (patient.doctorId?.toString() !== doctor.userId) {
-        return next(new AppError("You do not have permission to update this patient", 403));
-    }
-
-
-
     const updatedPatient = await User.findByIdAndUpdate(
         req.params.id,
         req.body,
@@ -89,22 +67,11 @@ export const updatePatientByDoctor = catchError(async (req, res, next) => {
 
 
 export const deletePatientByDoctor = catchError(async (req, res, next) => {
-    const doctor = req.user;
-
-    if (doctor.role !== "doctor") {
-        return next(new AppError("Only doctors can delete patients", 403));
-    }
-
     const patient = await User.findById(req.params.id);
 
     if (!patient || patient.role !== "patient") {
         return next(new AppError("Patient not found", 404));
     }
-
-    if (patient.doctorId?.toString() !== doctor.userId) {
-        return next(new AppError("You do not have permission to delete this patient", 403));
-    }
-
     await User.findByIdAndDelete(patient._id);
 
     res.status(200).json({

@@ -1,4 +1,5 @@
 import { User } from "../../databases/models/user.models.js";
+import { AppError } from "../utils/appError.js";
 import { catchError } from "./catchError.js";
 
 
@@ -20,18 +21,15 @@ export const canAccessPatientData = catchError(async(req, res, next) => {
             return next();
     }
     
-    if (loggedInUser.role === "assistant" && patient.assistantId?.toString() === loggedInUser.userId) {
-            return next();
+   
+    if (loggedInUser.role === "doctor" && patient.doctorId?.toString() === loggedInUser.userId) {
+           return next();
     }
     
-        if (loggedInUser.role === "doctor" && patient.doctorId?.toString() === loggedInUser.userId) {
-           console.log("x1");
-           return next();
-           
-           
-        }
+    if (loggedInUser.role === "admin") {
+       return next()
+    }
         
-        console.log("x2");
     
     return next(new AppError("Forbidden: You don't have access to this patient data", 403));
     

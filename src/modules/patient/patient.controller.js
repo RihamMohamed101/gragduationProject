@@ -1,5 +1,10 @@
 import { User } from "../../../databases/models/user.models.js";
 import { catchError } from "../../middleware/catchError.js";
+import { AppError } from "../../utils/appError.js";
+
+
+
+
 
 
 
@@ -23,19 +28,34 @@ export const getMyPatients = catchError(async (req, res, next) => {
 });
 
 
-export const addPatient = catchError(async(req , res , next) => {
-    const doctor = req.user;
+export const addPatient = catchError(async (req, res, next) => {
+
+
+    let doctor = req.user
+
+    let doctorId ="";
+    if (doctor.role == "admin")
+     {
+      doctorId  = req.body.doctorId
+     }
+            
+     else if (doctor.role == "doctor")
+     {
+      doctorId = doctor.userId;
+     }
+            
+     if (doctorId == undefined)
+         return next(new AppError("not found doctorId", 401))
+ 
+    const { name, email, password, age } = req.body;
     
-
-    const { name, email, password, age} = req.body;
-
      const newPatient = new User({
         name,
         email,
         password,
         age,
         role: "patient",
-        doctorId: doctor.userId
+        doctorId
     });
  
      await newPatient.save();

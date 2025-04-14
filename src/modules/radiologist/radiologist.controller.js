@@ -32,3 +32,38 @@ export const addRadiologist = catchError(async (req, res, next) => {
 
     res.status(201).json({ message: "Radiologist created successfully", radiolo });
 })
+
+
+export const updateRadio = catchError(async (req, res, next) => {
+
+    const radio = await User.findById(req.params.id);
+    if (!radio || radio.role !== "radio") {
+        return next(new AppError("radio not found", 404));
+    }
+    const updatedradio = await User.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true}
+    );
+
+    res.status(200).json({
+        message: "radio updated successfully",
+        radio: updatedradio
+    });
+});
+
+
+export const deleteRadio = catchError(async (req, res, next) => {
+
+    const radio = await User.findById(req.params.id);
+
+    if (!radio || radio.role !== "radio") {
+        return next(new AppError("radio not found", 404));
+    }
+    await User.findByIdAndDelete(radio._id);
+
+    res.status(200).json({
+        message: "radio deleted successfully"
+    });
+});
+

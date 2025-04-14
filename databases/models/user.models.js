@@ -60,43 +60,7 @@ const schema = new Schema({
     startDate: { type: Date, default: Date.now },
      endDate: { type: Date, required: false },
     
-    }],
- 
- 
- 
-  scans: [{
-      filePath:
-      {
-          type: String,
-          required: false,
-          trim: true
-      },
-
-      uploadedBy:
-      {
-          type: Types.ObjectId,
-          ref: 'User',
-          required: true
-      },
-
-      uploadDate:
-      {
-          type: Date,
-          default: Date.now
-      },
-
-      analyzed:
-      {
-          type: Boolean,
-          default: false
-      },
-
-      analysisResult:
-      {
-          type: Object,
-          required: false
-      }
-  }]
+    }]
     
 
 }, {

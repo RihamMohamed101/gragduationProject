@@ -35,3 +35,41 @@ export const addScan = catchError(async (req, res, next) => {
 
     next();
 });
+
+
+
+export const updateScan = catchError(async(req , res , next) => {
+    // req.params.id
+    // doctor update 
+    
+
+        const updatedScan = await Scan.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true}
+        );
+    
+        res.status(200).json({
+            message: "scan updated successfully",
+            scan: updatedScan
+        });
+})
+
+
+
+export const deletedScan = catchError(async(req , res , next) => {
+    // req.params.id
+    // doctor update 
+     let scan = await Scan.findById(req.params.id)
+    if (!scan) next(new AppError("this not founded", 404))
+    
+        const deletedScan = await Scan.findByIdAndDelete(
+            req.params.id
+        );
+    
+        res.status(200).json({
+            message: "scan deleted successfully",
+            scan: deletedScan
+        });
+})
+

@@ -2,8 +2,7 @@ import { model, Schema, Types } from "mongoose";
 
 import bcrypt from "bcrypt"
 
-const schema = new Schema({
-   
+const schema = new Schema({ 
     name: {
         type: String, required: true, trime: true,
             minLength: [3, 'Name must be at least 3 characters']
@@ -28,40 +27,6 @@ const schema = new Schema({
         type: Number,
         required: function () { return this.role === 'patient'; }
     }, // للمريض فقط
-
- medications: [{
-     name:
-     {
-         type: String,
-         required: true,
-         trim: true,
-         minlength: 2
-     },
-
-     dosage:
-     {
-         type: String,
-         required: true,
-         trim: true,
-         match: /^[0-9]+(mg|g|ml)?$/
-     },
-
-
-     schedule: { type: String, required: true, trim: true },
-    
-//      {
-//   name: "Paracetamol",
-//   dosage: "500mg",
-//   schedule: "كل 8 ساعات",
-//   type: "tablet"
-// }
-    
-    type: { type: String},
-    startDate: { type: Date, default: Date.now },
-     endDate: { type: Date, required: false },
-    
-    }]
-    
 
 }, {
     versionKey: false,

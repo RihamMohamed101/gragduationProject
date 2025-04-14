@@ -23,6 +23,14 @@ app.use('*', (req, res, next) => {
 
 app.use(globalError)
 
+
+
+import cron from 'node-cron';
+
+cron.schedule('*/5 * * * *', () => {
+  console.log('أنا بتنفذ كل 5 دقايق 🕔');
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 

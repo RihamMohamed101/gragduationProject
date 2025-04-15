@@ -12,7 +12,8 @@ scanRouter.post('/', protectedRoutes, allowedTo('Radiologist'),
     uploadSingleFile("scan", "scans"), addScan, analyzeScan)
     
 
-scanRouter.put('/:id' , protectedRoutes , allowedTo('doctor') ,updateScan)
+scanRouter.put('/:id', protectedRoutes, allowedTo('doctor'), updateScan)
+
 scanRouter.delete('/:id' , protectedRoutes , allowedTo('doctor') ,deletedScan)
 
 export default scanRouter

@@ -39,7 +39,7 @@ export const updateDoctor = catchError(async (req, res, next) => {
 
     
 
-    res.status(200).json({message: "doctor updated successfully"});
+    res.status(200).json({message: "doctor updated successfully"} , updatedDoctor);
 })
 
 export const deleteDoctor = catchError(async (req, res, next) => {

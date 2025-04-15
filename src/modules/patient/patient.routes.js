@@ -25,7 +25,7 @@ patientRouter.delete('/:id', protectedRoutes,
     
 
 // medicine
-    
+
 patientRouter.post('/:id/medicine', protectedRoutes, allowedTo('doctor')
     , addMedicine)
  

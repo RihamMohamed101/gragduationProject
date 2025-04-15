@@ -41,7 +41,6 @@ export const protectedRoutes = catchError( async (req, res, next) => {
     // if (!user) return next(new AppError("user Not found", 401))
     
     req.user = userPayload;
-    console.log("hhhhhhh");
     
     next()
 
@@ -52,7 +51,6 @@ export const allowedTo = (...roles)=> {
     return catchError(async (req, res, next) => {
         if (roles.includes(req.user.role))
         {
-            console.log("hhhhhhh1");
              return next()
              
         }

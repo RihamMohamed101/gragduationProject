@@ -7,7 +7,7 @@ import { checkEmail } from "../../middleware/checkEmail.js";
 
 
 
-const radiologistRouter = Router()
+const radiologistRouter = Router();
 
 radiologistRouter.post('/signin',RadiologistSignin)
 radiologistRouter.post('/', protectedRoutes, allowedTo('admin'), checkEmail,addRadiologist)

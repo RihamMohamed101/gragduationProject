@@ -14,6 +14,9 @@ export const addScan = catchError(async (req, res, next) => {
         return next(new AppError("No file uploaded", 400));
     }
 
+    console.log(req.file);
+    
+
     let uploadedFor; 
 
     let patient = await User.findOne({ email: req.body.email })

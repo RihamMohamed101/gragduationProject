@@ -4,6 +4,9 @@ import axios from "axios";
 import { catchError } from "./catchError.js";
 import { AppError } from "../utils/appError.js";
 
+import fs from 'fs'
+import FormData from'form-data'
+
 export const analyzeScan = catchError(async (req, res, next) => {
     const scan = req.savedScan;
 
@@ -12,13 +15,21 @@ export const analyzeScan = catchError(async (req, res, next) => {
     }
 
     try {
-        const aiResponse = await axios.post("http://localhost:5000/analyze", {
-            filePath: `uploads/scans/${scan.filePath}`
-        });
 
-        if (aiResponse.data) {
+const filePath = `uploads/scans/${scan.filePath}`; 
+ const form = new FormData();
+        
+form.append('file', fs.createReadStream(filePath)); 
+
+const aiResponse = await axios.post("https://alz1api-production.up.railway.app/predict", form, {
+  headers: {
+    ...form.getHeaders()
+  }
+});
+
+   if (aiResponse.data) {
             scan.analyzed = true;
-            scan.analysisResult = aiResponse.data.result;
+            scan.analysisResult = aiResponse.data.prediction;
             await scan.save();
         }
 

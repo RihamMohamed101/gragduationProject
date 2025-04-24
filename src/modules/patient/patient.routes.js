@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { addMedicine, addPatient, deleteMedicine, deletePatientByDoctor, getMyPatients, getPatient, updateMedicine, updatePatientByDoctor } from "./patient.controller.js";
+import {addPatient } from "./patient.controller.js";
 import { allowedTo, protectedRoutes } from "../auth/auth.controller.js";
 import { canAccessPatientData } from "../../middleware/canAccessPatientData.js";
-import { checkEmail } from "../../middleware/checkEmail.js";
+
 
 
 

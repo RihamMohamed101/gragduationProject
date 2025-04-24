@@ -3,13 +3,14 @@ import { catchError } from "../../middleware/catchError.js";
 
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { AppError } from "../../utils/appError.js";
 
 
 
 
 export const RadiologistSignin = catchError(async (req, res, next) => {
 
-    let user = await User.findOne({ email: req.body.email })
+    let user = await User.findOne({ code: req.body.code , role:"Radiologist" })
     console.log(user);
 
     if (user && bcrypt.compareSync(req.body.password, user.password) && (user.role == "Radiologist" || user.role == "admin")) {
@@ -20,10 +21,9 @@ export const RadiologistSignin = catchError(async (req, res, next) => {
 })
 
 export const addRadiologist = catchError(async (req, res, next) => {
-    const { name, email, password } = req.body;
+    const { name, password } = req.body;
     let radiolo = new User({
         name,
-        email,
         password,
         role: "Radiologist",
     })
@@ -37,7 +37,7 @@ export const addRadiologist = catchError(async (req, res, next) => {
 export const updateRadio = catchError(async (req, res, next) => {
 
     const radio = await User.findById(req.params.id);
-    if (!radio || radio.role !== "radio") {
+    if (!radio || radio.role !== "Radiologist") {
         return next(new AppError("radio not found", 404));
     }
     const updatedradio = await User.findByIdAndUpdate(
@@ -50,14 +50,14 @@ export const updateRadio = catchError(async (req, res, next) => {
         message: "radio updated successfully",
         radio: updatedradio
     });
-});
-
+}
+)
 
 export const deleteRadio = catchError(async (req, res, next) => {
 
     const radio = await User.findById(req.params.id);
 
-    if (!radio || radio.role !== "radio") {
+    if (!radio || radio.role !== "Radiologist") {
         return next(new AppError("radio not found", 404));
     }
     await User.findByIdAndDelete(radio._id);
@@ -67,3 +67,12 @@ export const deleteRadio = catchError(async (req, res, next) => {
     });
 });
 
+
+export const allRadio = catchError(async (req, res, next) => {
+    const radio = await User.find({ role: "Radiologist" });
+
+    res.status(200).json({
+        message: "success",
+        radio
+    });
+})

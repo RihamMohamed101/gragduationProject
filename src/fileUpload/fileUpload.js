@@ -1,18 +1,20 @@
 import multer from "multer"
-import { v4 as uuidv4 } from 'uuid';
 import { AppError } from "../utils/appError.js";
 
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { cloudinary } from "../utils/cloud.js";
 
+const fileUpload = (folderName) => {
+  
+  const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+      folder: "aiPhoto", // اسم المجلد على Cloudinary
+      allowed_formats: ["png","jpg"],
+      transformation: [{ width: 500, height: 500, crop: "limit" }],
+    },
+  });
 
-const  fileUpload = (folderName)=> {
-    const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, `uploads/${folderName}`)
-  },
-  filename: function (req, file, cb) {
-    cb(null, uuidv4() + '-' + file.originalname)
-  }
-})
 
 
 function fileFilter (req, file, cb) {
@@ -24,8 +26,6 @@ function fileFilter (req, file, cb) {
 
 }
 
-
-
 const upload = multer({
     storage, fileFilter
 })
@@ -34,7 +34,7 @@ const upload = multer({
 }
 
 
-export const uploadSingleFile = (fileName , folderName) => {
-     return fileUpload(folderName).single(fileName)
+export const uploadSingleFile = (fileName) => {
+     return fileUpload().single(fileName)
 }
 

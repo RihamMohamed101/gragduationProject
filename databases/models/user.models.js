@@ -1,14 +1,22 @@
 import { model, Schema, Types } from "mongoose";
 
 import bcrypt from "bcrypt"
+import { v4 as uuidv4 } from 'uuid';
 
 const schema = new Schema({ 
     name: {
         type: String, required: true, trime: true,
             minLength: [3, 'Name must be at least 3 characters']
     },
-   email: { type: String, required: true, unique: true },
-   password: { type: String, required: true ,trim:true}, 
+
+  code: {
+      type: String,
+      default: () => uuidv4().slice(0, 5), // أول 5 حروف فقط
+      unique: true
+    },
+  
+    password: { type: String, required: true, trim: true }, 
+   
     role: {
         type: String,
         enum: ['doctor', 'patient', 'admin', 'Radiologist'],

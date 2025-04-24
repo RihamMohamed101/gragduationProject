@@ -44,32 +44,20 @@ export const getMyPatients = catchError(async (req, res, next) => {
 
 export const addPatient = catchError(async (req, res, next) => {
 
-
-    let doctor = req.user
-
-    let doctorId ="";
-    if (doctor.role == "admin")
-     {
-      doctorId  = req.body.doctorId
-     }
+    let doctor = await User.findOne({ code: req.body.code , role:"doctor" })
+    if (!doctor)
+         return next(new AppError("code not found", 409))
             
-     else if (doctor.role == "doctor")
-     {
-      doctorId = doctor.userId;
-     }
-            
-     if (doctorId == undefined)
-         return next(new AppError("not found doctorId", 401))
+
  
-    const { name, email, password, age } = req.body;
+    const {name,password,age } = req.body;
     
      const newPatient = new User({
         name,
-        email,
         password,
         age,
         role: "patient",
-        doctorId
+        doctorId:doctor._id
     });
  
      await newPatient.save();

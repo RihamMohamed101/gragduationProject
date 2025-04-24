@@ -3,29 +3,28 @@
 import axios from "axios";
 import { catchError } from "./catchError.js";
 import { AppError } from "../utils/appError.js";
-
-import fs from 'fs'
 import FormData from'form-data'
 
 export const analyzeScan = catchError(async (req, res, next) => {
     const scan = req.savedScan;
-
+    
+    
+    
     if (!scan) {
         return next(new AppError("not found scan" , 400));
     }
 
     try {
 
-const filePath = `uploads/scans/${scan.filePath}`; 
- const form = new FormData();
+    const form = new FormData();
+    form.append("image_url", scan.filePath);
         
-form.append('file', fs.createReadStream(filePath)); 
+    const aiResponse = await axios.post(
+        "https://alz-apiri.onrender.com/predict",
+       form,
+       { headers: form.getHeaders() }
+    );
 
-const aiResponse = await axios.post("https://alz1api-production.up.railway.app/predict", form, {
-  headers: {
-    ...form.getHeaders()
-  }
-});
 
    if (aiResponse.data) {
             scan.analyzed = true;
@@ -34,7 +33,7 @@ const aiResponse = await axios.post("https://alz1api-production.up.railway.app/p
         }
 
     } catch (error) {
-         console.error("AI analysis failed:", error.message);
+         console.error("AI analysis failed:", error.response ? error.response.data : error.message);
          return next(new AppError("AI analysis failed:" , 401))
     }
 

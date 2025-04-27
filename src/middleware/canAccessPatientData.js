@@ -15,7 +15,7 @@ export const canAccessPatientData = catchError(async(req, res, next) => {
 
         if (!patient || patient.role !== "patient") {
             return next(new AppError("Patient not found", 404));
-    }
+        }
     
     if (loggedInUser.role === "patient" && loggedInUser.userId === patientId) {
             return next();

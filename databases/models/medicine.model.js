@@ -18,7 +18,12 @@ const schema = new Schema({
     type: Types.ObjectId,
     ref: 'User', // المريض
     required: true
-    }
+  },
+  
+  confirm: {
+    type: Boolean,
+    default : false
+  }
   
 })
 

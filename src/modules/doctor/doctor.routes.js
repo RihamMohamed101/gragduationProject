@@ -1,7 +1,7 @@
-import { canAccessDoctorData } from "../../middleware/canAccessDoctor.js";
+
 import { allowedTo, protectedRoutes } from "../auth/auth.controller.js";
 import patientRouter from "../patient/patient.routes.js";
-import { addDoctor } from "./doctor.controller.js";
+import { addDoctor, allDoctors, deleteDoctor } from "./doctor.controller.js";
 
 import { Router } from "express";
 
@@ -19,22 +19,14 @@ doctorRouter.route('/')
         allowedTo('admin'), addDoctor)
     
     
-    //    .get(protectedRoutes,
-    //        allowedTo('admin'), allDoctors)
+       .get(protectedRoutes,
+           allowedTo('admin'), allDoctors)
            
 
 
-// doctorRouter.route('/:id')
-//     .put(protectedRoutes,
-//      allowedTo('admin', 'doctor'),
-//         canAccessDoctorData, updateDoctor)
-    
-//         .delete(protectedRoutes,
-//         allowedTo('admin', 'doctor'),
-//             canAccessDoctorData, deleteDoctor)
-    
-//     .get(protectedRoutes, allowedTo('admin', 'doctor'),
-//        canAccessDoctorData , getDoctor )
+doctorRouter.route('/:id').delete(protectedRoutes,
+        allowedTo('admin'), deleteDoctor)
+
 
 
              

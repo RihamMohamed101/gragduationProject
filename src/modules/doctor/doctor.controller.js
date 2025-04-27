@@ -1,4 +1,4 @@
-import { User } from "../../../databases/models/user.models.js";
+import { Doctor } from "../../../databases/models/doctor.models.js";
 import { catchError } from "../../middleware/catchError.js";
 import { AppError } from "../../utils/appError.js";
 
@@ -9,15 +9,12 @@ import { AppError } from "../../utils/appError.js";
 export const addDoctor = catchError(async(req, res, next) => {
     
     const { name, password} = req.body;
-    let doctor = new User({
+    let doctor = new Doctor({
         name,
-        password,
-        role: "doctor"
+        password
     })
-
     await doctor.save()
-
-     res.status(201).json({ message: "doctor created successfully", doctor});
+    res.status(201).json({ message: "doctor created successfully", doctor});
 })
 
 
@@ -25,23 +22,14 @@ export const addDoctor = catchError(async(req, res, next) => {
 
 
 export const deleteDoctor = catchError(async (req, res, next) => {
-
-    const doctor = await User.findById(req.params.id);
-   
-    
-    if (!doctor || doctor.role !== "doctor") {
-        return next(new AppError("doctor not found", 404));
-    }
-    await User.findByIdAndDelete(doctor._id);
-
-    res.status(200).json({
-        message: "doctor deleted successfully"
-    });
+    const doctor=  await Doctor.findByIdAndDelete(req.params.id);
+   return doctor ? res.status(200).json({ message: "doctor deleted successfully"})
+                : next(new AppError("doctor not found" , 404))
 });
 
 
 export const allDoctors = catchError(async(req , res , next) => {
-     const doctors = await User.find({ role: "doctor"});
-    res.status(200).json({ message: "success", doctors });
+     const doctors = await Doctor.find({ role: "doctor"});
+       res.status(200).json({ message: "success", doctors });
 })
 

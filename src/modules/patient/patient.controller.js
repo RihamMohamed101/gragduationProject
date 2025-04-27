@@ -1,6 +1,7 @@
+import { Doctor } from "../../../databases/models/doctor.models.js";
 import { Medicine } from "../../../databases/models/medicine.model.js";
+import { Patient } from "../../../databases/models/patient.model.js";
 import { Scan } from "../../../databases/models/scan.model.js";
-import { User } from "../../../databases/models/user.models.js";
 import { catchError } from "../../middleware/catchError.js";
 import { AppError } from "../../utils/appError.js";
 
@@ -8,7 +9,7 @@ import { AppError } from "../../utils/appError.js";
 
 export const getPatient = catchError(async (req, res, next) => {
     
-    let patient = await User.findById(req.params.id)
+    let patient = await Patient.findById(req.params.id)
     const scan = await Scan.find({ uploadedTo: patient._id });
     const medicines = await Medicine.find({ prescribedTo: patient._id });
 
@@ -27,15 +28,14 @@ export const getMyPatients = catchError(async (req, res, next) => {
 
     let filterObj = {};
     filterObj.role = "patient" 
-    
     filterObj.doctorId = req.user.userId
     
-    const patients = await User.find(filterObj)
+    const patients = await Patient.find(filterObj)
 
     const patientsWithRadiology = await Promise.all(
         patients.map(async (patient) => {
             const scan = await Scan.find({ uploadedTo: patient._id });
-            const medicines = await Medicine.find({ prescribedTo: patient._id });
+            const medicines = await Medicine.find({ prescribedTo: patient._id , confirm:true });
             return {
                  ...patient.toObject(),
                  scan: scan || [],
@@ -50,7 +50,7 @@ export const getMyPatients = catchError(async (req, res, next) => {
 
 export const addPatient = catchError(async (req, res, next) => {
 
-    let doctor = await User.findOne({ code: req.body.code , role:"doctor" })
+    let doctor = await Doctor.findOne({ code: req.body.code , role:"doctor" })
     if (!doctor)
          return next(new AppError("code not found", 409))
             
@@ -58,11 +58,10 @@ export const addPatient = catchError(async (req, res, next) => {
  
     const {name,password,age } = req.body;
     
-     const newPatient = new User({
+     const newPatient = new Patient({
         name,
         password,
         age,
-        role: "patient",
         doctorId:doctor._id
     });
  
@@ -78,12 +77,12 @@ export const updatePatientByDoctor = catchError(async (req, res, next) => {
 
 
     if (req.body.code) {
-    let doctor = await User.findOne({ code: req.body.code , role:"doctor" })
+    let doctor = await Patient.findOne({ code: req.body.code , role:"doctor" })
     if (!doctor)
          return next(new AppError("code not found", 409))
     }
-    
-    const updatedPatient = await User.findByIdAndUpdate(
+
+    const updatedPatient = await Patient.findByIdAndUpdate(
         req.params.id,
         req.body,
         { new: true}

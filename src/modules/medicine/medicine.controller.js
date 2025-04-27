@@ -1,5 +1,5 @@
 import { Medicine } from "../../../databases/models/medicine.model.js";
-import { User } from "../../../databases/models/user.models.js";
+import { Patient } from "../../../databases/models/patient.model.js";
 import { catchError } from "../../middleware/catchError.js";
 import { AppError } from "../../utils/appError.js";
 
@@ -7,7 +7,7 @@ import { AppError } from "../../utils/appError.js";
 export const addMedicine = catchError(async(req , res , next) => {
     
  
-  let patient = await User.findOne({code:req.body.code})
+  let patient = await Patient.findOne({code:req.body.code})
     if (!patient || patient.role !== "patient") {
     return next(new AppError("Patient code is required", 400));
   }
@@ -50,7 +50,6 @@ export const updateMedicine = catchError(async(req , res , next) => {
 export const deleteMedicine = catchError(async(req , res , next) => {
  
     const medicine = await Medicine.findByIdAndUpdate(req.params.id ,{confirm:false})
-
     res.status(200).json({
     message: "Medication deleted successfully",
   });

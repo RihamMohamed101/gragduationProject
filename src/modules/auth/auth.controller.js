@@ -1,25 +1,34 @@
-import { User } from "../../../databases/models/user.models.js";
+
 import { AppError } from "../../utils/appError.js";
 import { catchError } from "../../middleware/catchError.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
+import { Admin } from "../../../databases/models/admin.model.js";
 
 
-export const signup = catchError(async (req, res, next) => {
-    let user = new User(req.body);
-    await user.save()
-    let token = jwt.sign({userId:user._id , role:user.role} , process.env.JWT_KEY)
-    res.json({message:"success" , token})
+
+
+export const addAdmin = async(req, res, next) => {
+   let admin = new Admin(req.body)
+    await admin.save()
+    res.json({message:"succes"})
 }
-)
-
 export const signin = catchError(async (req, res, next) => {
-    let user = await User.findOne({ code: req.body.code })
 
+
+    const model = req.info;
+    let user = await model.findOne({name:req.body.name})
+    
+    console.log(user);
+    
+    
     if (user && bcrypt.compareSync(req.body.password, user.password)) {
         let token = jwt.sign({ userId: user._id, role: user.role },  process.env.JWT_KEY)
         return res.json({message:"success" , token})
     }
+
+ 
+    
 
     next(new AppError("not founded email or password" , 401))
 })

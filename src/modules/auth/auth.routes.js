@@ -1,11 +1,12 @@
 
 import { Router } from "express";
-import { signin, signup } from "./auth.controller.js";
+import { addAdmin, signin} from "./auth.controller.js";
+import { roleBehavior } from "../../middleware/role.js";
 
 
 
 const authRouer = Router()
-authRouer.post('/signup',signup)
-authRouer.post('/signin', signin)
 
+authRouer.post('/signin', roleBehavior,signin)
+authRouer.post('/' , addAdmin)
 export default authRouer

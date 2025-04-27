@@ -21,7 +21,7 @@ medicineRoute.put('/:id', protectedRoutes, allowedTo('doctor','admin'),
     canAccessMedData, updateMedicine)
    
 
-medicineRoute.delete('/:id', protectedRoutes, allowedTo('doctor'),
+medicineRoute.delete('/:id', protectedRoutes, allowedTo('doctor' , 'admin'),
     canAccessMedData,deleteMedicine)
 
 export default medicineRoute

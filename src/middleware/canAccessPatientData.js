@@ -1,4 +1,4 @@
-import { User } from "../../databases/models/user.models.js";
+import { Patient } from "../../databases/models/patient.model.js";
 import { AppError } from "../utils/appError.js";
 import { catchError } from "./catchError.js";
 
@@ -11,7 +11,7 @@ export const canAccessPatientData = catchError(async(req, res, next) => {
     const loggedInUser = req.user; 
     const patientId = req.params.id;
     
-    const patient = await User.findById(patientId);
+    const patient = await Patient.findById(patientId);
 
         if (!patient || patient.role !== "patient") {
             return next(new AppError("Patient not found", 404));

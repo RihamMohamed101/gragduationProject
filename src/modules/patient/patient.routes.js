@@ -18,7 +18,7 @@ patientRouter.get('/',protectedRoutes,
 patientRouter.post('/', protectedRoutes, allowedTo('admin'),addPatient)
 
 patientRouter.put('/:id', protectedRoutes,
-    allowedTo('doctor','admin'),canAccessPatientData, updatePatientByDoctor)
+    allowedTo('doctor'),canAccessPatientData, updatePatientByDoctor)
 
 
     

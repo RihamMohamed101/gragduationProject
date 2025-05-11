@@ -8,7 +8,7 @@ const schema = new Schema({
         type: String, required: true, trime: true,
             minLength: [3, 'Name must be at least 3 characters']
     },
-  
+    
     password: { type: String, required: true, trim: true }, 
    
     role: {

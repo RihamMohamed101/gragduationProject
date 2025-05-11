@@ -9,7 +9,7 @@ import { AppError } from "../../utils/appError.js";
 
 export const getPatient = catchError(async (req, res, next) => {
     
-    let patient = await Patient.findById(req.params.id)
+    let patient = await Patient.findById(req.params.id).populate('doctorId','name')
     const scan = await Scan.find({ uploadedTo: patient._id });
     const medicines = await Medicine.find({ prescribedTo: patient._id });
 

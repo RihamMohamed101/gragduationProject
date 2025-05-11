@@ -14,21 +14,12 @@ export const addAdmin = async(req, res, next) => {
     res.json({message:"succes"})
 }
 export const signin = catchError(async (req, res, next) => {
-
-
     const model = req.info;
     let user = await model.findOne({name:req.body.name})
-    
-    console.log(user);
-    
-    
     if (user && bcrypt.compareSync(req.body.password, user.password)) {
         let token = jwt.sign({ userId: user._id, role: user.role },  process.env.JWT_KEY)
         return res.json({message:"success" , token})
     }
-
- 
-    
 
     next(new AppError("not founded email or password" , 401))
 })

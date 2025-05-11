@@ -13,7 +13,7 @@ export const addScan = catchError(async (req, res, next) => {
     if (!req.file) {
         return next(new AppError("No file uploaded", 400));
     }
-    let patient = await Patient.findOne({ code: req.body.code })
+   let patient = await Patient.findOne({ code: req.body.code })
    if (!patient) {
     return next(new AppError("this patient not found in system", 401));
    }

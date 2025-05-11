@@ -13,7 +13,7 @@ const schema = new Schema({
     uploadedTo: // patient 
       {
           type: Types.ObjectId,
-          ref: 'User',
+          ref: 'Patient',
           required: true
       },
 

@@ -37,6 +37,11 @@ const schema = new Schema({
         required: true
     }, // للمريض فقط
 
+    deviceTokens: {
+        type: String,
+        default: null
+      }
+      
 }, {
     versionKey: false,
     timestamps: {
@@ -44,10 +49,18 @@ const schema = new Schema({
     }
 })
 
-schema.pre('save', function () {
-    if(this.password)
-    this.password = bcrypt.hashSync(this.password , 8)
-})
+// schema.pre('save', function () {
+//     if(this.password)
+//     this.password = bcrypt.hashSync(this.password , 8)
+// })
+
+
+schema.pre('save', function(next) {
+    if (this.isModified('password')) {
+      this.password = bcrypt.hashSync(this.password, 10);
+    }
+    next();
+  });
 
 schema.pre('findOneAndUpdate', function () {
     if(this._update.password)

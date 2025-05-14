@@ -28,7 +28,8 @@ export const getMyPatients = catchError(async (req, res, next) => {
 
     let filterObj = {};
     filterObj.role = "patient" 
-    filterObj.doctorId = req.user.userId
+    if (req.user.userId.role == "doctor")
+           filterObj.doctorId = req.user.userId
     
     const patients = await Patient.find(filterObj)
 

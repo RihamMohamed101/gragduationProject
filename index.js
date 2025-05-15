@@ -12,13 +12,13 @@ const app = express()
 const port = process.env.PORT || 3000
 
 app.use(cors({
-    origin: 'https://gragduation-project.vercel.app',
+    origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'token']
   }));
   
-app.options('*', cors());
+  app.options('*', cors());
   
 app.use(express.json())
 app.use(express.static('uploads'))

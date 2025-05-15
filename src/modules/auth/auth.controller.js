@@ -16,14 +16,17 @@ export const addAdmin = async(req, res, next) => {
 export const signin = catchError(async (req, res, next) => {
     const model = req.info;
 
+    
     let user = await model.findOne({ name: req.body.name })
-          
+    
 
     if (user && bcrypt.compareSync(req.body.password, user.password)) {
+        
+
               
-        if (req.body.deviceToken) {
+        if (user.role=="patient" && req.body.deviceToken) {
             user.deviceTokens = req.body.deviceToken;
-            await user.save();
+            user.save()
         }
 
         let token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_KEY)

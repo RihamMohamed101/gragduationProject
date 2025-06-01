@@ -12,7 +12,7 @@ export const addMedicine = catchError(async(req , res , next) => {
     return next(new AppError("Patient code is required", 400));
   }
 
-  const { name, dosage, schedule, type, startDate, endDate } = req.body;
+  const { name, dosage, schedule, type, startDate, endDate , timeToTake ,numPottle} = req.body;
 
   const newMed = await Medicine.create({
     name,
@@ -21,6 +21,8 @@ export const addMedicine = catchError(async(req , res , next) => {
     type,
     startDate,
     endDate,
+    timeToTake,
+    numPottle,
     prescribedTo: patient._id
   });
 

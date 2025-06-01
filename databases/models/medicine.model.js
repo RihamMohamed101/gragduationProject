@@ -20,12 +20,9 @@ const schema = new Schema({
     required: true
   },
 
-  numPottle: {
-    Type:String
-  },
+  numPottle : String,
 
-
-  timeToTake: {
+ timeToTake: {
     type: String,
     required: true,
   },

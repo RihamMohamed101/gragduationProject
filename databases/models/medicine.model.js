@@ -26,7 +26,7 @@ const schema = new Schema({
 
 
   timeToTake: {
-    type: Date,
+    type: String,
     required: true,
   },
 

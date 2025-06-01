@@ -16,10 +16,20 @@ const schema = new Schema({
   
   prescribedTo: {
     type: Types.ObjectId,
-    ref: 'User', // المريض
+    ref: 'Patient', // المريض
     required: true
   },
-  
+
+  numPottle: {
+    Type:String
+  },
+
+
+  timeToTake: {
+    type: Date,
+    required: true,
+  },
+
   confirm: {
     type: Boolean,
     default : false

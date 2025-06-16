@@ -24,7 +24,7 @@ export const signin = catchError(async (req, res, next) => {
         
 
               
-        if (user.role=="patient" && req.body.deviceToken) {
+        if ((user.role=="patient"||user.role=="doctor") && req.body.deviceToken) {
             user.deviceTokens = req.body.deviceToken;
             user.save()
         }

@@ -25,6 +25,11 @@ const schema = new Schema({
         required: true
     },
 
+    deviceTokens: {
+        type: String,
+        default: null
+      }
+
 }, {
     versionKey: false,
     timestamps: {

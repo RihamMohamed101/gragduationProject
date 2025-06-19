@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const schema = new Schema({ 
     name: {
-        type: String, required: true, trime: true,
+        type: String, required: true, trim: true,
             minLength: [3, 'Name must be at least 3 characters']
     },
 

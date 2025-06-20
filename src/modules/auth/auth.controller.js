@@ -18,8 +18,9 @@ export const signin = catchError(async (req, res, next) => {
 
     
     let user = await model.findOne({ name: req.body.name })
-    
-
+      
+  console.log(bcrypt.compareSync(req.body.password, user.password));
+  
     if (user && bcrypt.compareSync(req.body.password, user.password)) {
         
 

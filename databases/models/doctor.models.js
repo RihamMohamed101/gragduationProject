@@ -39,10 +39,12 @@ const schema = new Schema({
     }
 })
 
-schema.pre('save', function () {
-    if(this.password)
-    this.password = bcrypt.hashSync(this.password , 8)
-})
+schema.pre('save', function(next) {
+    if (this.isModified('password')) {
+      this.password = bcrypt.hashSync(this.password, 10);
+    }
+    next();
+  });
 
 
 

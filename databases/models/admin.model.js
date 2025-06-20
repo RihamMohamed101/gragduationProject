@@ -5,7 +5,8 @@ import bcrypt from "bcrypt"
 
 const schema = new Schema({ 
     name: {
-        type: String, required: true, trime: true,
+        type: String, required: true,
+        trime: true,
             minLength: [3, 'Name must be at least 3 characters']
     },
     

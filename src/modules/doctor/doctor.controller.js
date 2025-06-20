@@ -6,7 +6,7 @@ import { AppError } from "../../utils/appError.js";
 
 
 
-export const addDoctor = catchError(async(req, res, next) => {
+export const addDoctor = async(req, res, next) => {
     
     const { name, password} = req.body;
     let doctor = new Doctor({
@@ -15,7 +15,7 @@ export const addDoctor = catchError(async(req, res, next) => {
     })
     await doctor.save()
     res.status(201).json({ message: "doctor created successfully", doctor});
-})
+}
 
 
     
